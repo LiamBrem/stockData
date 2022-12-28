@@ -1,1 +1,16 @@
-/venv
+__pycache__
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+
+# Visual Studio Code 
+.vscode/* 
+!.vscode/settings.json 
+!.vscode/tasks.json 
+!.vscode/launch.json 
+!.vscode/extensions.json 
+.history
