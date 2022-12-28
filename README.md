@@ -1,0 +1,1 @@
+A python program where people can add stocks to their portfolio & view their info
