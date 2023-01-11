@@ -1,5 +1,5 @@
 import yfinance as yf
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 class Stock:
     def __init__(self, symbol, price):
@@ -8,15 +8,23 @@ class Stock:
 
         self.tickerObj = yf.Ticker(symbol)
 
-    def symbolHistory(self):
-        return self.tickerObj.history(period="1mo", interval="1d")
+    def symbolHistory(self, period, interval):
+        return self.tickerObj.history(period=period, interval=interval)
 
     def drawGraph(self):
         pass
 
+    def recentPerformance(self):
+        #take the first value for month and the last value & compare
 
-#example = Stock("AAPL", 4747)
+        history = self.symbolHistory("1m", "1d")
 
-#print(example.symbolHistory())
+
+        print(history)
+
+
+example = Stock("AAPL", 4747)
+
+example.recentPerformance()
 
 #print(example)
