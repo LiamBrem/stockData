@@ -1,12 +1,16 @@
 import yfinance as yf
 import datetime
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
 
 
 
 def graph(x,y):
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
+    plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=5))
+
     plt.plot(xpoints, ypoints)
     plt.show()
 
@@ -35,8 +39,8 @@ def getPoints(stockSymbol):
     listOfDateTimes = df['Date'].tolist()
     listOfDates = []
 
-    for i in range(len(listOfDateTimes)):
-        date = str(listOfDateTimes[i])
+    for i in listOfDateTimes:
+        date = str(i)
         date = date[0:10] 
 
         listOfDates.append(date)
@@ -60,7 +64,6 @@ def getPoints(stockSymbol):
             iList.append(iList[j])
         #makes the list every character except the first 5
         iList = iList[5:]
-        print(iList)
 
         listOfDates[i] = ''.join(iList)
 
@@ -84,4 +87,4 @@ if __name__ == "__main__":
     xpoints, ypoints = getPoints(symbol)
 
 
-    #graph(xpoints,ypoints)
+    graph(xpoints,ypoints)
