@@ -2,6 +2,7 @@ import yfinance as yf
 import datetime
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
 
@@ -26,12 +27,53 @@ def getPoints(stockSymbol):
 
     print(history)
 
-    for i in range(len(history)):
-        #this date may have to be changed
-        print(history["Date"][i])
+    #list of dates
+    sf = history["Close"]
+    df = pd.DataFrame({'Date':sf.index, 'Values':sf.values})
 
-        #x.append(history["Date"][i])
+    #list of corresponding dates
+    listOfDateTimes = df['Date'].tolist()
+    listOfDates = []
+
+    for i in range(len(listOfDateTimes)):
+        date = str(listOfDateTimes[i])
+        date = date[0:10] 
+
+        listOfDates.append(date)
+
+    #converts yyyy-mm-dd to yyyy/mm/dd
+    for i in range(len(listOfDates)):
+        iList = list(listOfDates[i])
+        for j in range(len(iList)):
+            if iList[j] == "-":
+                iList[j] = "/"
+        listOfDates[i] = ''.join(iList)
+
+    #this must be in mm/dd/yyyy
+    for i in range(len(listOfDates)):
+        #converts value to list
+        iList = list(listOfDates[i])
+        #appends /
+        iList.append("/")
+        #appends first 4 characters
+        for j in range(0,4):
+            iList.append(iList[j])
+        #makes the list every character except the first 5
+        iList = iList[5:]
+        print(iList)
+
+        listOfDates[i] = ''.join(iList)
+
+
+
+    x = [datetime.datetime.strptime(d,'%m/%d/%Y').date() for d in listOfDates]
+
+    #gets the closing value every day
+    for i in range(len(history)):
         y.append(history["Close"][i])
+
+    print(x)
+    print(y)
 
     return x,y
 
