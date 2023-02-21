@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 #import numpy as np
 import pandas as pd
+import matplotlib as mpl
+from matplotlib import style
 
 
 def graph(x, y1, y2):
@@ -103,16 +105,67 @@ def getYPoints(stockSymbol):
   return y
 
 
+def graphCluster(symbol):
+  start, end = getStartEnd()
+  symbol_ticker = yf.Ticker(symbol)
+  df = symbol_ticker.history(start=start, end=end)
+
+  mpl.rc('figure', figsize=(8, 7))
+  mpl.__version__
+
+  # Adjusting the style of matplotlib
+  style.use('dark_background')
+  
+  close_px = df['Close']
+
+  #moving average
+  #mavg = close_px.rolling(window=100).mean()
+
+  #returns 
+  #rets = close_px / close_px.shift(1) - 1
+
+  compareStock = input("What stock would you like to display the correlation with?: ")
+
+  spTicker = yf.Ticker(compareStock)
+  spdf = spTicker.history(start=start, end=end)
+
+  data = []
+
+  for i in range(len(df["Close"])):
+    listToAppend = []
+    listToAppend.append(df["Close"][i])
+    listToAppend.append(spdf["Close"][i])
+    data.append(listToAppend)
+
+
+  combinedDf = pd.DataFrame(data, columns=["STOCK1", "STOCK2"])
+
+  #percentage change
+  retscomp = combinedDf.pct_change()
+
+  corr = retscomp.corr()
+
+  plt.scatter(retscomp.STOCK1, retscomp.STOCK2, color="m")
+  plt.xlabel(symbol + " Returns")
+  plt.ylabel(compareStock + " S&P Returns")
+
+  plt.show()
+  
+
+
 if __name__ == "__main__":
   print("this program compares any stock to the overall S&P 500")
   symbol = input("Enter the symbol you want to use: ")
 
-
-  xpoints = getXPoints(symbol)
-  ypoints = getYPoints(symbol)
-  sppoints = getYPoints("^GSPC")
-
-  graph(xpoints, ypoints, sppoints)
-
-  print("Close the first window to see the graph")
-  print("CTRL+C to quit")
+  option = input("(1) Linear Comparison\n(2) Cluster Analysis\n")
+  if option == "1":
+    xpoints = getXPoints(symbol)
+    ypoints = getYPoints(symbol)
+    sppoints = getYPoints("^GSPC")
+  
+    graph(xpoints, ypoints, sppoints)
+    
+    print("Close the first window to see the graph")
+    print("CTRL+C to quit")
+  elif option == "2":
+    graphCluster(symbol)
