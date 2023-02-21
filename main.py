@@ -30,6 +30,8 @@ def graph(x, y1, y2):
   
   plt.show()
 
+  print("You must first close the first window by clicking the x")
+
 
 def getStartEnd():
   end = datetime.date.today()
@@ -147,15 +149,15 @@ def graphCluster(symbol):
 
   plt.scatter(retscomp.STOCK1, retscomp.STOCK2, color="m")
   plt.xlabel(symbol + " Returns")
-  plt.ylabel(compareStock + " S&P Returns")
+  plt.ylabel(compareStock + " Returns")
 
   plt.show()
   
 
 
 if __name__ == "__main__":
-  print("this program compares any stock to the overall S&P 500")
-  symbol = input("Enter the symbol you want to use: ")
+  print("this program compares any stock to the overall S&P 500 and \ngraphs the correlation between any 2 stocks")
+  symbol = input("Enter the SYMBOL you want to use: ")
 
   option = input("(1) Linear Comparison\n(2) Cluster Analysis\n")
   if option == "1":
